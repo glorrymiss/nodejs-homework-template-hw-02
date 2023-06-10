@@ -55,6 +55,9 @@ router.post("/", async (req, res, next) => {
 
 router.put("/:id", async (req, res, next) => {
   try {
+    if (!req.body) {
+      return res.status(400).json({ message: "missing fields" });
+    }
     const { error } = ValidSheme.validate(req.body);
     if (error) {
       throw HttpError(400, error.message);
