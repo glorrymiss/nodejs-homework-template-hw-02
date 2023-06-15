@@ -1,5 +1,5 @@
 const { HttpError, ctrlWrapper } = require("../helpers");
-const Joi = require("joi");
+
 const {
   listContacts,
   getById,
@@ -7,12 +7,6 @@ const {
   updateContact,
   addContact,
 } = require("../models/contacts");
-
-const ValidSheme = Joi.object({
-  name: Joi.string().required(),
-  email: Joi.string().required(),
-  phone: Joi.string().required(),
-});
 
 const fnlistContacts = async (req, res) => {
   const allContacts = await listContacts();
@@ -29,25 +23,14 @@ const fnGetById = async (req, res) => {
 };
 
 const fnAddContact = async (req, res) => {
-  const { error } = ValidSheme.validate(req.body);
-  if (error) {
-    throw HttpError(400, error.message);
-  }
   const contactAdd = await addContact(req.body);
   res.status(201).json(contactAdd);
 };
 
 const fnUpdateContact = async (req, res) => {
-  const { error } = ValidSheme.validate(req.body);
-  if (error) {
-    throw HttpError(400, error.message);
-  }
   const { id } = req.params;
   const updateDate = await updateContact(id, req.body);
 
-  if (!updateDate) {
-    throw HttpError(404, "missing fields");
-  }
   res.status(200).json(updateDate);
 };
 
