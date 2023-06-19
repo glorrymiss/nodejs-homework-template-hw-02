@@ -4,7 +4,12 @@ const validateBody = (scheme) => {
   const func = (req, res, next) => {
     const { error } = scheme.validate(req.body);
     if (error) {
-      next(HttpError(400, "missing required name field"));
+      next(
+        HttpError(
+          400,
+          `missing required ${error.message.split(" ").splice(0, 1)} field`
+        )
+      );
     }
     next();
   };
@@ -30,4 +35,23 @@ const validateUpdateBody = (scheme) => {
   return func;
 };
 
-module.exports = { validateBody, validateUpdateBody };
+const validateUpdateFavorite = (scheme) => {
+  const func = (req, res, next) => {
+    if (!req.body) {
+      next(HttpError(400, "missing field favorite"));
+    }
+    const { error } = scheme.validate(req.body);
+    if (error) {
+      next(
+        HttpError(
+          400,
+          `missing required  ${error.message.split(" ").splice(0, 1)} field`
+        )
+      );
+    }
+    next();
+  };
+  return func;
+};
+
+module.exports = { validateBody, validateUpdateBody, validateUpdateFavorite };
