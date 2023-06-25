@@ -1,17 +1,13 @@
 const { HttpError, ctrlWrapper } = require("../helpers");
 
-const Contact = require("../models/contact");
-
-// const {
-//   listContacts,
-//   getById,
-//   removeContact,
-//   updateContact,
-//   addContact,
-// } = require("../models/contacts");
+const { Contact } = require("../models/contact");
 
 const fnlistContacts = async (req, res) => {
-  const allContacts = await Contact.find();
+  const { _id: owner } = req.user;
+  // пагінація
+  const { page = 1, limit = 20 } = req.query;
+  const skip = (page - 1) * limit;
+  const allContacts = await Contact.find({ owner }, { skip, limit });
   res.status(200).json(allContacts);
 };
 
@@ -25,7 +21,8 @@ const fnGetById = async (req, res) => {
 };
 
 const fnAddContact = async (req, res) => {
-  const contactAdd = await Contact.create(req.body);
+  const { _id: owner } = req.user;
+  const contactAdd = await Contact.create({ ...req.body, owner });
   res.status(201).json(contactAdd);
 };
 

@@ -1,3 +1,4 @@
+// wrapper try/catch
 const ctrlWrapper = (ctrl) => {
   const func = async (req, res, next) => {
     try {
