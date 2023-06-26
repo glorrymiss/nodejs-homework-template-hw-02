@@ -4,16 +4,21 @@ const { Contact } = require("../models/contact");
 
 const fnlistContacts = async (req, res) => {
   const { _id: owner } = req.user;
+  console.log(owner);
   // пагінація
-  const { page = 1, limit = 20 } = req.query;
+  const { page = 1, limit = 20, favorite } = req.query;
   const skip = (page - 1) * limit;
-  const allContacts = await Contact.find({ owner }, { skip, limit });
+  const filter = favorite ? { owner, favorite: true } : {};
+  const allContacts = await Contact.find(filter, "", {
+    skip,
+    limit,
+  }).populate("owner", "email");
   res.status(200).json(allContacts);
 };
 
 const fnGetById = async (req, res) => {
   const { id } = req.params;
-  const contactById = await Contact.findById(id);
+  const contactById = await Contact.findById({ _id: id });
   if (!contactById) {
     throw HttpError(404, "Not found");
   }
@@ -46,7 +51,7 @@ const updateStatusContact = async (req, res) => {
 
 const fnDeleteContact = async (req, res) => {
   const { id } = req.params;
-  const deleteContact = await Contact.findByIdAndRemove(id);
+  const deleteContact = await Contact.findByIdAndRemove({ _id: id });
   if (!deleteContact) {
     throw HttpError(404, "Not found");
   }

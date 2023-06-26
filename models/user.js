@@ -4,14 +4,12 @@ const Joi = require("joi");
 
 const validEmail =
   /^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/;
-// const validWord = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^\w\s]).{6,}/;
 
 const userSchema = new Schema(
   {
     password: {
       type: String,
       required: [true, "Set password for user"],
-      // match: validWord,
       minLength: 8,
     },
     email: {
@@ -45,4 +43,13 @@ const validLoginSchema = Joi.object({
   email: Joi.string().pattern(validEmail).required(),
 });
 
-module.exports = { User, validRegisterSchema, validLoginSchema };
+const validStatusSchema = Joi.object({
+  subscription: Joi.string().required(),
+});
+
+module.exports = {
+  User,
+  validRegisterSchema,
+  validLoginSchema,
+  validStatusSchema,
+};
