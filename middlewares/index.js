@@ -1,9 +1,10 @@
-const isAuthenticate = require("../middlewares/isAuthenticate");
-const isValidId = require("../middlewares/isValidId");
-const validateBody = require("../middlewares/validateBody");
-
+const isAuthenticate = require("./isAuthenticate");
+const isValidId = require("./isValidId");
+const validateBody = require("./validateBody")
+const upload = require("./isAvatar");
 module.exports = {
   isAuthenticate,
   isValidId,
   validateBody,
+  upload,
 };
