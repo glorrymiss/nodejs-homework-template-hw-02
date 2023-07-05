@@ -7,6 +7,8 @@ const {
   logout,
   subscription,
   avatarUpdate,
+  varification,
+  resendVerifyEmail
 } = require("../../controllers/auth");
 
 const router = express.Router();
@@ -14,12 +16,15 @@ const {
   validRegisterSchema,
   validLoginSchema,
   validStatusSchema,
+  validEmailSchema,
 } = require("../../models/user");
 const { isAuthenticate, isValidId, validateBody, upload  } = require("../../middlewares");
 
 
 
 router.post("/register", validateBody(validRegisterSchema), register);
+
+router.post("/verify", validateBody(validEmailSchema), resendVerifyEmail)
 
 router.post("/login", validateBody(validLoginSchema), login);
 
@@ -39,4 +44,5 @@ router.patch("/avatars", isAuthenticate,
 upload.single("avatar"),
  avatarUpdate);
 
+router.get("/verify/:verificationToken", varification )
 module.exports = router;
