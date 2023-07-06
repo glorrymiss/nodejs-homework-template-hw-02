@@ -24,6 +24,9 @@ const { isAuthenticate, isValidId, validateBody, upload  } = require("../../midd
 
 router.post("/register", validateBody(validRegisterSchema), register);
 
+
+router.get("/verify/:verificationToken", varification )
+
 router.post("/verify", validateBody(validEmailSchema), resendVerifyEmail)
 
 router.post("/login", validateBody(validLoginSchema), login);
@@ -44,5 +47,4 @@ router.patch("/avatars", isAuthenticate,
 upload.single("avatar"),
  avatarUpdate);
 
-router.get("/verify/:verificationToken", varification )
 module.exports = router;

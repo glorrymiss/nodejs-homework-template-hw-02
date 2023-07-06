@@ -2,16 +2,18 @@ const { HttpError } = require("../../helpers")
 const {User} = require("../../models/user")
 
 const varification = async(req, res) =>{
-const {verificationCode} = req.params
+const {verificationToken} = req.params
 
-const user = User.findOne({verificationCode})
+const user = User.findOne({verificationToken})
 if(!user){
+  
     throw HttpError(404, "User not found")
 }
-await User.findByIdAndUpdate(user._id, {verify:true,verificationCode:""})
+
+await User.findOneAndUpdate({verificationToken}, {verify: true, verificationToken:""})
 
 res.json({
-    message: "Verification successful",
+    message: "Email verify successful",
 })
 }
 

@@ -26,7 +26,7 @@ const newUser = await User.create({
  const verificateEmail = {
     to:email,
     subject: "Verify email",
-    html:`<a target="_blank" href="${BASE_URL}/users/verify/:${verificationToken}">Click on email</a>`
+    html:`<a target="_blank" href="${BASE_URL}/api/users/verify/${verificationToken}">Click verify email</a>`
  }
 
  await sendEmail(verificateEmail)
